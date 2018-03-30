@@ -84,9 +84,10 @@ Inside the \texttt{timeline} environment one can use the following commands.
 		$\parameter{endSymbol}$ can be any symbol one could put on the right side of `\verb'-'' at \verb'\draw[-]' in the \texttt{tikz}-command.
 	\item[Add a crunched bar part.] Used to literally skip some parts in the timebar where nothing happens. Drawn via the command
 \begin{lstlisting}
-	\zigzar{$\parameter{xStartCoordinate}$}
+	\zigzag{$\parameter{xStartCoordinate}$}
 \end{lstlisting}
 $\parameter{xStartCoordinate}$ is the $x$-coordinate where it should start. Usually, when using this command, one has to calculate the $x$-coordinate by hand from what was executed before.
+Then length of the zigzag is $0.4$.
 
 \item[Entries.] An entry has four possible commands, depending on whether it should appear above, below, shifted above, or shifted below. The unshifted versions are essentially the same.
 \begin{lstlisting}
