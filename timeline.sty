@@ -1,0 +1,163 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{timeline}[2018/03/30 timeline LaTeX package]
+
+\RequirePackage{pgf}
+\RequirePackage{tikz}
+\RequirePackage{xparse}
+\RequirePackage{ifthen}
+
+\usetikzlibrary{arrows,shapes.misc,calc}
+
+\definecolor{uniblue}{rgb}{0.29,0.45,0.72}
+\colorlet{timeline-what}{orange!75!white}
+\colorlet{timeline-what-fg}{black}
+\colorlet{timeline-who}{uniblue!75!white}
+\colorlet{timeline-who-fg}{white}
+
+\newcommand{\timelineInnerBG}[1]{\colorlet{timeline-what}{#1}}
+\newcommand{\timelineInnerFG}[1]{\colorlet{timeline-what-fg}{#1}}
+\newcommand{\timelineOuterBG}[1]{\colorlet{timeline-who}{#1}}
+\newcommand{\timelineOuterFG}[1]{\colorlet{timeline-who-fg}{#1}}
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\NewDocumentEnvironment{timeline}{O{orange!75!white} O{black} O{uniblue!75!white} O{white}}{%
+\begin{tikzpicture}%
+\timelineInnerBG{#1}%
+\timelineInnerFG{#2}%
+\timelineOuterBG{#3}%
+\timelineOuterFG{#4}%
+}{\end{tikzpicture}}
+
+
+\newcommand{\entry}[3]{
+	\begin{pgfonlayer}{main}
+		\node[anchor=west,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle east arc=none,
+		  font=\color{timeline-what-fg},
+		  fill=timeline-what,
+		  inner sep=.5mm,
+		  yshift=.3cm,xshift=.2cm,
+		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
+		\node[anchor=west,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle west arc=none,
+		  fill=timeline-who,
+		  inner sep=.5mm,
+		  font=\color{white},
+		  minimum height=.4cm] at (#1-label.east) {\footnotesize #3};
+	\end{pgfonlayer}
+
+    \begin{pgfonlayer}{background}
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
+    	\path let \p1 = (#1) in node (#1-goal) at (\x1,.85) {};
+		\draw[ultra thick,timeline-what] (#1.center) -- (#1.center|-#1-label.north west);
+    \end{pgfonlayer}
+}
+
+\newcommand{\flipentry}[3]{
+	\begin{pgfonlayer}{main}
+		\node[anchor=east,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle west arc=none,
+		  fill=timeline-what,
+		  inner sep=.5mm,
+		  yshift=-.4cm,xshift=-.3cm,
+		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
+		\node[anchor=east,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle east arc=none,
+		  fill=timeline-who,
+		  inner sep=.5mm,
+		  font=\color{timeline-who-fg},
+		  minimum height=.4cm] at (#1-label.west) {\footnotesize #3};
+	\end{pgfonlayer}
+
+    \begin{pgfonlayer}{background}
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
+    	\path let \p1 = (#1) in node (#1-goal) at (\x1,-1.15) {};
+		\draw[ultra thick,timeline-what] (#1.center) -- (#1.center|-#1-label.south east);
+    \end{pgfonlayer}
+}
+
+\newcommand{\entryshift}[4]{
+	\begin{pgfonlayer}{main}
+		\node[anchor=west,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle east arc=none,
+		  fill=timeline-what,
+		  inner sep=.5mm,
+		  font=\color{timeline-what-fg},
+		  yshift=.3cm-#4,xshift=.2cm+#4,
+		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
+		\node[anchor=west,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle west arc=none,
+		  fill=timeline-who,
+		  inner sep=.5mm,
+		  font=\color{timeline-who-fg},
+		  minimum height=.4cm] at (#1-label.east) {\footnotesize #3};
+	\end{pgfonlayer}
+
+    \begin{pgfonlayer}{background}
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
+		\draw[ultra thick,timeline-what] (#1.center) |- ([xshift=#4]#1-label.west);
+    \end{pgfonlayer}
+}
+
+\newcommand{\flipentryshift}[4]{
+	\begin{pgfonlayer}{main}
+		\node[anchor=east,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle west arc=none,
+		  fill=timeline-what,
+		  font=\color{timeline-what-fg},
+		  inner sep=.5mm,
+		  yshift=-.4cm-#4,xshift=-.3cm+#4,
+		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
+		\node[anchor=east,
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle east arc=none,
+		  fill=timeline-who,
+		  inner sep=.5mm,
+		  font=\color{timeline-who-fg},
+		  minimum height=.4cm] at (#1-label.west) {\footnotesize #3};
+	\end{pgfonlayer}
+
+    \begin{pgfonlayer}{background}
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
+		\draw[ultra thick,timeline-what] (#1.center) |- ([xshift=#4]#1-label.north east);
+    \end{pgfonlayer}
+}
+
+
+% \timeline{startsymbol}{startX}{fromyear}{toyear}{intervallength}{endsymbol}
+\newcommand{\timebar}[6]{
+	\pgfmathsetmacro{\timelineIntervalLength}{(#4-#3)+1} % length of interval with 1x at the end
+	\ifthenelse{\equal{#1}{|}}{\pgfmathsetmacro{\timelineOffset}{-.25}}{\pgfmathsetmacro{\timelineOffset}{0}}
+  	\draw[#1-#6] (#2+\timelineOffset,0) -- (#2+#5*\timelineIntervalLength,0);
+  	\foreach \l [count=\li] in {#3,...,#4}{
+  		\pgfmathsetmacro{\timelineX}{#2+(\li-1)*#5} % counter \li starts at 1, thus '-1' required. 
+  		\pgfmathsetmacro{\timelineLengthY}{mod(\l,5)==0?2:1} % if its divisible by 5 
+ 		\draw (\timelineX,.\timelineLengthY) -- (\timelineX,-.\timelineLengthY) node[font=\footnotesize,yshift=-1.15mm]  {\ifthenelse{\timelineLengthY=2}{\l}{}};
+  		\node (\l) at (\timelineX,0) {};
+  	}
+}
+
+% \timelinezigzag{start-x-coordinate}
+\newcommand{\zigzag}[1]{
+	\draw[-] (#1,0) -- (#1+0.1,-.4) -- (#1+0.2,.4) -- (#1+0.3,0) -- (#1+0.4,0);
+}
+
+\endinput

@@ -1,0 +1,111 @@
+\documentclass{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{timeline}
+\usepackage{url}
+\usepackage[UKenglish]{babel}
+\usepackage{listings}% http://ctan.org/pkg/listings
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+
+\author{Arne Meier\\\url{meier@thi.uni-hannover.de}}
+\title{\texttt{timeline} Package}
+
+\newcommand{\parameter}[1]{\langle\normalfont\textit{#1}\rangle}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+	The \texttt{timeline} package provides an easy interface to create and maintain timelines.
+	It provides macros utilising \texttt{tikz} and \texttt{pgf}.
+\end{abstract}
+
+\section{License}
+This package is under the MIT License. Copyright (c) 2018 Arne Meier.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+\section{Environment options}
+The environment \texttt{timeline} has four optional arguments:
+\begin{center}
+\begin{lstlisting}
+	\begin{timeline}
+		{$\parameter{InnerBackgroundColor}$}
+		{$\parameter{InnerForegroundColor}$}
+		{$\parameter{OuterBackgroundColor}$}
+		{$\parameter{OuterForegroundColor}$}
+\end{lstlisting}
+\end{center}
+
+They define the respective color for the events on the timeline.
+Default settings are some orange \tikz{\node[fill=orange!75!white] at (0,0) {};} with black text for the inner part and some blueish \tikz{\node[fill=uniblue!75!white] at (0,0) {};} with white text for the outer part.
+
+\section{Example}
+A small example is provided:
+
+\begin{verbatim}
+\begin{timeline}
+  \timebar{|}{0}{1959}{1960}{.5}{}
+  \zigzag{1}
+  \entry{1959}{Branching Quantifiers}{Henkin}
+  
+  \timebar{}{1.4}{1989}{1990}{.5}{}
+  \zigzag{2.4}
+  \entry{1989}{IF-logic}{Hintikka, Sandu}
+  
+  \timebar{}{2.8}{1997}{2018}{.5}{stealth'}
+  \entry{1997}{Compositional Semantics for IF}{Hodges}
+  \entry{2003}{IF modal logic}{Tulenheimo}
+  \entry{2007}{Dependence Logic}{Väänänen}
+  \flipentry{2008}{Modal Dependence Logic}{Väänänen}
+  \entry{2011}{Inclusion \& Exclusion Logic}{Galliani}
+  \entryshift{2012}{Independence Logic}{Grädel, Väänänen}{2mm}
+  \flipentry{2011}{Modal Team Logic}{Müller}
+  \entry{2016}{Multiteam Semantics}{Durand et al.}
+  \flipentry{2016}{Prop. Team Logic}{Yang, Väänänen}
+  \flipentryshift{2017}{Polyteam Semantics}{Hannula et al.}{2mm}
+\end{timeline}
+\end{verbatim}
+and produces the following timeline:
+
+	\begin{timeline}
+	 	\timebar{|}{0}{1959}{1960}{.5}{}
+	  	\zigzag{1}
+	  	\entry{1959}{Branching Quantifiers}{Henkin}
+	  	
+	  	\timebar{}{1.4}{1989}{1990}{.5}{}
+	  	\zigzag{2.4}
+		\entry{1989}{IF-logic}{Hintikka, Sandu}
+	
+		\timebar{}{2.8}{1997}{2018}{.5}{stealth'}
+		\entry{1997}{Compositional Semantics for IF}{Hodges}
+		\entry{2003}{IF modal logic}{Tulenheimo}
+		\entry{2007}{Dependence Logic}{Väänänen}
+		\flipentry{2008}{Modal Dependence Logic}{Väänänen}
+		\entry{2011}{Inclusion \& Exclusion Logic}{Galliani}
+		\entryshift{2012}{Independence Logic}{Grädel, Väänänen}{2mm}
+		\flipentry{2011}{Modal Team Logic}{Müller}
+		\entry{2016}{Multiteam Semantics}{Durand et al.}
+		\flipentry{2016}{Prop. Team Logic}{Yang, Väänänen}
+		\flipentryshift{2017}{Polyteam Semantics}{Hannula et al.}{2mm}
+  	\end{timeline}
+
+\end{document}
