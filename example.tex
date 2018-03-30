@@ -58,6 +58,55 @@ The environment \texttt{timeline} has four optional arguments:
 They define the respective color for the events on the timeline.
 Default settings are some orange \tikz{\node[fill=orange!75!white] at (0,0) {};} with black text for the inner part and some blueish \tikz{\node[fill=uniblue!75!white] at (0,0) {};} with white text for the outer part.
 
+\section{Commands}
+Inside the \texttt{timeline} environment one can use the following commands.
+\begin{description}
+	\item[Add a timebar] This is done via the 6-parameter command
+		%{startsymbol}{startX}{fromyear}{toyear}{intervallength}{endsymbol}
+\begin{lstlisting}
+\timebar{$\parameter{startsymbol}$}
+	{$\parameter{startXcoordinate}$}
+	{$\parameter{fromYear}$}
+	{$\parameter{toYear}$}
+	{$\parameter{stepLength}$}
+	{$\parameter{endSymbol}$}
+\end{lstlisting}
+		$\parameter{startSymbol}$ can be any symbol one could put on the left side of `\verb'-'' at \verb'\draw[-]' in the \texttt{tikz}-command.
+		
+		$\parameter{startXcoordinate}$ is the $x$-coordinate. $y$ is always considered to be $0$.
+		
+		$\parameter{fromYear}$ is in YYYY.
+		
+		$\parameter{toYear}$ is in YYYY.
+		
+		$\parameter{stepLength}$ is the length of one year on the timebar.
+		
+		$\parameter{endSymbol}$ can be any symbol one could put on the right side of `\verb'-'' at \verb'\draw[-]' in the \texttt{tikz}-command.
+	\item[Add a crunched bar part.] Used to literally skip some parts in the timebar where nothing happens. Drawn via the command
+\begin{lstlisting}
+	\zigzar{$\parameter{xStartCoordinate}$}
+\end{lstlisting}
+$\parameter{xStartCoordinate}$ is the $x$-coordinate where it should start. Usually, when using this command, one has to calculate the $x$-coordinate by hand from what was executed before.
+
+\item[Entries.] An entry has four possible commands, depending on whether it should appear above, below, shifted above, or shifted below. The unshifted versions are essentially the same.
+\begin{lstlisting}
+	\entry{$\parameter{year}$}{$\parameter{what}$}{$\parameter{who}$}
+	\flippedentry{$\parameter{year}$}{$\parameter{what}$}{$\parameter{who}$}
+\end{lstlisting}
+$\parameter{year}$ is YYYY which has to exists on the timebar. Otherwise it will create a missing label error.
+
+$\parameter{what}$ the content of the inner (near the timebar) box.
+
+$\parameter{who}$ the content of the outer box.
+
+\begin{lstlisting}
+	\entryshift{$\parameter{year}$}{$\parameter{what}$}{$\parameter{who}$}{$\parameter{distance}$}
+	\flippedentryshift{$\parameter{year}$}{$\parameter{what}$}{$\parameter{who}$}{$\parameter{distance}$}
+\end{lstlisting}
+
+$\parameter{distance}$ is the length (usually in mm) which shiftes the entry to the right (in direction of the $x$-coordinate).
+\end{description}
+
 \section{Example}
 A small example is provided:
 
