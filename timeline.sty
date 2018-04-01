@@ -13,22 +13,29 @@
 \colorlet{timeline-what-fg}{black}
 \colorlet{timeline-who}{uniblue!75!white}
 \colorlet{timeline-who-fg}{white}
+\colorlet{timeline-connector}{orange!75!white}
 
 \newcommand{\timelineInnerBG}[1]{\colorlet{timeline-what}{#1}}
 \newcommand{\timelineInnerFG}[1]{\colorlet{timeline-what-fg}{#1}}
 \newcommand{\timelineOuterBG}[1]{\colorlet{timeline-who}{#1}}
 \newcommand{\timelineOuterFG}[1]{\colorlet{timeline-who-fg}{#1}}
+\newcommand{\timelineConnector}[1]{\colorlet{timeline-conector}{#1}}
 
 \pgfdeclarelayer{background}
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background,main,foreground}
 
-\NewDocumentEnvironment{timeline}{O{orange!75!white} O{black} O{uniblue!75!white} O{white}}{%
+\NewDocumentEnvironment{timeline}{O {orange!75!white} O {black} O {uniblue!75!white} O {white} o}{%
 \begin{tikzpicture}%
 \timelineInnerBG{#1}%
 \timelineInnerFG{#2}%
 \timelineOuterBG{#3}%
 \timelineOuterFG{#4}%
+\IfNoValueTF{#5}{
+\timelineConnector{#1}%
+}{
+\timelineConnector{#5}%
+}
 }{\end{tikzpicture}}
 
 
@@ -49,14 +56,14 @@
 		  rounded rectangle west arc=none,
 		  fill=timeline-who,
 		  inner sep=.5mm,
-		  font=\color{white},
+		  font=\color{timeline-who-fg},
 		  minimum height=.4cm] at (#1-label.east) {\footnotesize #3};
 	\end{pgfonlayer}
 
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
     	\path let \p1 = (#1) in node (#1-goal) at (\x1,.85) {};
-		\draw[ultra thick,timeline-what] (#1.center) -- (#1.center|-#1-label.north west);
+		\draw[ultra thick,timeline-conector] (#1.center) -- (#1.center|-#1-label.north west);
     \end{pgfonlayer}
 }
 
@@ -67,6 +74,7 @@
 		  rounded rectangle,
 		  rounded rectangle west arc=none,
 		  fill=timeline-what,
+		  font=\color{timeline-what-fg},
 		  inner sep=.5mm,
 		  yshift=-.4cm,xshift=-.3cm,
 		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
@@ -81,9 +89,9 @@
 	\end{pgfonlayer}
 
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
     	\path let \p1 = (#1) in node (#1-goal) at (\x1,-1.15) {};
-		\draw[ultra thick,timeline-what] (#1.center) -- (#1.center|-#1-label.south east);
+		\draw[ultra thick,timeline-conector] (#1.center) -- (#1.center|-#1-label.south east);
     \end{pgfonlayer}
 }
 
@@ -109,8 +117,8 @@
 	\end{pgfonlayer}
 
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
-		\draw[ultra thick,timeline-what] (#1.center) |- ([xshift=#4]#1-label.west);
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
+		\draw[ultra thick,timeline-conector] (#1.center) |- ([xshift=#4]#1-label.west);
     \end{pgfonlayer}
 }
 
@@ -136,8 +144,8 @@
 	\end{pgfonlayer}
 
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-what] at (#1) {};
-		\draw[ultra thick,timeline-what] (#1.center) |- ([xshift=#4]#1-label.north east);
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
+		\draw[ultra thick,timeline-conector] (#1.center) |- ([xshift=#4]#1-label.north east);
     \end{pgfonlayer}
 }
 

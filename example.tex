@@ -4,10 +4,43 @@
 \usepackage{timeline}
 \usepackage{url}
 \usepackage[UKenglish]{babel}
-\usepackage{listings}% http://ctan.org/pkg/listings
+\usepackage{listings}
 \lstset{
-  basicstyle=\ttfamily,
-  mathescape
+mathescape,
+basicstyle=\scriptsize\ttfamily,
+commentstyle=\ttfamily\color{gray},
+numbers=left,
+numberstyle=\ttfamily\color{gray}\footnotesize,
+stepnumber=1,
+numbersep=5pt,
+backgroundcolor=\color{white},
+showspaces=false,
+showstringspaces=false,
+showtabs=false,
+frame=single,
+tabsize=2,
+captionpos=b,
+breaklines=true,
+breakatwhitespace=false,
+title=\lstname,
+escapeinside={},
+keywordstyle={},
+morekeywords={},
+mathescape,
+literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
 }
 
 \author{Arne Meier\\\url{meier@thi.uni-hannover.de}}
@@ -19,7 +52,7 @@
 \maketitle
 \begin{abstract}
 	The \texttt{timeline} package provides an easy interface to create and maintain timelines.
-	It provides macros utilising \texttt{tikz} and \texttt{pgf}.
+	Its macros utilise the \texttt{tikzenvironment} and commands from the  \texttt{pgf} package.
 \end{abstract}
 
 \section{License}
@@ -44,19 +77,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 \section{Environment options}
-The environment \texttt{timeline} has four optional arguments:
+The environment \texttt{timeline} has five optional arguments:
 \begin{center}
 \begin{lstlisting}
 	\begin{timeline}
-		{$\parameter{InnerBackgroundColor}$}
-		{$\parameter{InnerForegroundColor}$}
-		{$\parameter{OuterBackgroundColor}$}
-		{$\parameter{OuterForegroundColor}$}
+		[$\parameter{InnerBackgroundColor}$]
+		[$\parameter{InnerForegroundColor}$]
+		[$\parameter{OuterBackgroundColor}$]
+		[$\parameter{OuterForegroundColor}$]
+		[$\parameter{ConnectorColor}$]
 \end{lstlisting}
 \end{center}
 
 They define the respective color for the events on the timeline.
-Default settings are some orange \tikz{\node[fill=orange!75!white] at (0,0) {};} with black text for the inner part and some blueish \tikz{\node[fill=uniblue!75!white] at (0,0) {};} with white text for the outer part.
+Default settings are some orange \tikz{\node[fill=orange!75!white] at (0,0) {};} with black text for the inner part and some blueish \tikz{\node[fill=uniblue!75!white] at (0,0) {};} with white text for the outer part. 
+If the fifth parameter for the connector color is not specified, then the $\parameter{InnerBackgroundColor}$ will be used instead.
+Feel free to change the colours via the parameters.
 
 \section{Commands}
 Inside the \texttt{timeline} environment one can use the following commands.
@@ -111,7 +147,7 @@ $\parameter{distance}$ is the length (usually in mm) which shiftes the entry to 
 \section{Example}
 A small example is provided:
 
-\begin{verbatim}
+\begin{lstlisting}
 \begin{timeline}
   \timebar{|}{0}{1959}{1960}{.5}{}
   \zigzag{1}
@@ -133,7 +169,7 @@ A small example is provided:
   \flipentry{2016}{Prop. Team Logic}{Yang, Väänänen}
   \flipentryshift{2017}{Polyteam Semantics}{Hannula et al.}{2mm}
 \end{timeline}
-\end{verbatim}
+\end{lstlisting}
 and produces the following timeline:
 
 	\begin{timeline}
