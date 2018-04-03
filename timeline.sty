@@ -57,115 +57,57 @@
 }
 }{\end{tikzpicture}}
 
+% \entrytemplate*type{year}{what}{where}{shift}
+\NewDocumentCommand{\entrytemplate}{s m m m o}{
+\pgfmathsetmacro{\yshiftval}{\IfBooleanTF{#1}{-0.4cm}{0.3cm}\IfValueT{#5}{-#5}}
+\pgfmathsetmacro{\xshiftval}{\IfBooleanTF{#1}{-0.3cm}{0.2cm}\IfValueT{#5}{+#5}}
 
-\newcommand{\entry}[3]{
 	\begin{pgfonlayer}{main}
-		\node[anchor=west,
+		\node[anchor=\IfBooleanTF{#1}{east}{west},
 		  rotate=45,
 		  rounded rectangle,
-		  rounded rectangle east arc=none,
+		  rounded rectangle \IfBooleanTF{#1}{west}{east} arc=none,
 		  font=\color{timeline-what-fg},
 		  fill=timeline-what,
 		  inner sep=.5mm,
-		  yshift=.3cm,xshift=.2cm,
-		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
-		\node[anchor=west,
+		  yshift=\yshiftval,
+		  xshift=\xshiftval,
+		  minimum height=.4cm] (#2-label) at (#2) {\footnotesize #3};
+		\node[anchor=\IfBooleanTF{#1}{east}{west},
 		  rotate=45,
 		  rounded rectangle,
-		  rounded rectangle west arc=none,
+		  rounded rectangle \IfBooleanTF{#1}{east}{west} arc=none,
 		  fill=timeline-who,
 		  inner sep=.5mm,
 		  font=\color{timeline-who-fg},
-		  minimum height=.4cm] at (#1-label.east) {\footnotesize #3};
+		  minimum height=.4cm] at (#2-label.\IfBooleanTF{#1}{west}{east}) {\footnotesize #4};
 	\end{pgfonlayer}
 
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
-    	\path let \p1 = (#1) in node (#1-goal) at (\x1,.85) {};
-		\draw[ultra thick,timeline-conector] (#1.center) -- (#1.center|-#1-label.north west);
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#2) {};
+    	\path let \p1 = (#2) in node (#2-goal) at (\x1,\IfBooleanTF{#1}{-1.15}{.85}) {};
+		\draw[ultra thick,timeline-conector] (#2.center) 
+			\IfNoValueTF{#5}%
+			{ -- (#2.center|-#2-label.\IfBooleanTF{#1}{south east}{north west})}%
+			{ |- ([xshift=#5]#2-label.\IfBooleanTF{#1}{north east}{west})};
     \end{pgfonlayer}
+}
+
+
+\newcommand{\entry}[3]{
+	\entrytemplate{#1}{#2}{#3}
 }
 
 \newcommand{\flipentry}[3]{
-	\begin{pgfonlayer}{main}
-		\node[anchor=east,
-		  rotate=45,
-		  rounded rectangle,
-		  rounded rectangle west arc=none,
-		  fill=timeline-what,
-		  font=\color{timeline-what-fg},
-		  inner sep=.5mm,
-		  yshift=-.4cm,xshift=-.3cm,
-		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
-		\node[anchor=east,
-		  rotate=45,
-		  rounded rectangle,
-		  rounded rectangle east arc=none,
-		  fill=timeline-who,
-		  inner sep=.5mm,
-		  font=\color{timeline-who-fg},
-		  minimum height=.4cm] at (#1-label.west) {\footnotesize #3};
-	\end{pgfonlayer}
-
-    \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
-    	\path let \p1 = (#1) in node (#1-goal) at (\x1,-1.15) {};
-		\draw[ultra thick,timeline-conector] (#1.center) -- (#1.center|-#1-label.south east);
-    \end{pgfonlayer}
+	\entrytemplate*{#1}{#2}{#3}
 }
 
 \newcommand{\entryshift}[4]{
-	\begin{pgfonlayer}{main}
-		\node[anchor=west,
-		  rotate=45,
-		  rounded rectangle,
-		  rounded rectangle east arc=none,
-		  fill=timeline-what,
-		  inner sep=.5mm,
-		  font=\color{timeline-what-fg},
-		  yshift=.3cm-#4,xshift=.2cm+#4,
-		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
-		\node[anchor=west,
-		  rotate=45,
-		  rounded rectangle,
-		  rounded rectangle west arc=none,
-		  fill=timeline-who,
-		  inner sep=.5mm,
-		  font=\color{timeline-who-fg},
-		  minimum height=.4cm] at (#1-label.east) {\footnotesize #3};
-	\end{pgfonlayer}
-
-    \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
-		\draw[ultra thick,timeline-conector] (#1.center) |- ([xshift=#4]#1-label.west);
-    \end{pgfonlayer}
+	\entrytemplate{#1}{#2}{#3}[#4]
 }
 
 \newcommand{\flipentryshift}[4]{
-	\begin{pgfonlayer}{main}
-		\node[anchor=east,
-		  rotate=45,
-		  rounded rectangle,
-		  rounded rectangle west arc=none,
-		  fill=timeline-what,
-		  font=\color{timeline-what-fg},
-		  inner sep=.5mm,
-		  yshift=-.4cm-#4,xshift=-.3cm+#4,
-		  minimum height=.4cm] (#1-label) at (#1) {\footnotesize #2};
-		\node[anchor=east,
-		  rotate=45,
-		  rounded rectangle,
-		  rounded rectangle east arc=none,
-		  fill=timeline-who,
-		  inner sep=.5mm,
-		  font=\color{timeline-who-fg},
-		  minimum height=.4cm] at (#1-label.west) {\footnotesize #3};
-	\end{pgfonlayer}
-
-    \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#1) {};
-		\draw[ultra thick,timeline-conector] (#1.center) |- ([xshift=#4]#1-label.north east);
-    \end{pgfonlayer}
+	\entrytemplate*{#1}{#2}{#3}[#4]
 }
 
 
