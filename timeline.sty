@@ -89,7 +89,7 @@
 		\draw[ultra thick,timeline-conector] (#2.center) 
 			\IfNoValueTF{#5}%
 			{ -- (#2.center|-#2-label.\IfBooleanTF{#1}{south east}{north west})}%
-			{ |- ([xshift=#5]#2-label.\IfBooleanTF{#1}{north east}{west})};
+			{ |- ([xshift=1mm]#2-label.\IfBooleanTF{#1}{north east}{west})};
     \end{pgfonlayer}
 }
 
