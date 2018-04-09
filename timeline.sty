@@ -44,6 +44,16 @@
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background,main,foreground}
 
+
+%%%% This part of the code (until the end marker) is licensed under cc by-sa 3.0, Paul Gaborit (https://tex.stackexchange.com/users/14500/paul-gaborit)
+%%%% It appeared as an answer to my question (https://tex.stackexchange.com/questions/424785/tikz-get-current-unit-length-of-x-coordinate) on TeX.StackExchange.
+\def\getxlengthincm#1{
+  \path let \p{x}=(1,0), \n{xlencm}={scalar(veclen(\x{x},\y{x})/1cm)}
+  in \pgfextra{\xdef#1{\n{xlencm}}};
+}
+%%% End Marker
+
+
 \NewDocumentEnvironment{timeline}{O {orange!75!white} O {black} O {uniblue!75!white} O {white} o}{%
 \begin{tikzpicture}%
 \timelineInnerBG{#1}%
@@ -121,6 +131,16 @@
   		\pgfmathsetmacro{\timelineLengthY}{mod(\l,5)==0?2:1} % if its divisible by 5 
  		\draw (\timelineX,.\timelineLengthY) -- (\timelineX,-.\timelineLengthY) node[font=\footnotesize,yshift=-1.15mm]  {\ifthenelse{\timelineLengthY=2}{\l}{}};
   		\node (\l) at (\timelineX,0) {};
+  	}
+
+    \getxlengthincm{\myxlength}
+
+
+  	\pgfmathsetmacro{\timebarunit}{#5/12}
+  	\foreach \y in {#3,...,#4}{
+  		\foreach \m in {1,...,12}{
+  			\node[xshift=1cm*\myxlength*\timebarunit*(\m-1)] (\y-\m) at (\y) {};
+  		}
   	}
 }
 
