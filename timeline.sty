@@ -39,6 +39,7 @@
 \newcommand{\timelineOuterBG}[1]{\colorlet{timeline-who}{#1}}
 \newcommand{\timelineOuterFG}[1]{\colorlet{timeline-who-fg}{#1}}
 \newcommand{\timelineConnector}[1]{\colorlet{timeline-conector}{#1}}
+\newcommand{\timelineEntryMinHeight}{.4cm}
 
 \pgfdeclarelayer{background}
 \pgfdeclarelayer{foreground}
@@ -54,7 +55,7 @@
 %%% End Marker
 
 
-\NewDocumentEnvironment{timeline}{O {orange!75!white} O {black} O {uniblue!75!white} O {white} o}{%
+\NewDocumentEnvironment{timeline}{O {orange!75!white} O {black} O {uniblue!75!white} O {white} O {orange!75!white} o}{%
 \begin{tikzpicture}%
 \timelineInnerBG{#1}%
 \timelineInnerFG{#2}%
@@ -64,6 +65,9 @@
 \timelineConnector{#1}%
 }{
 \timelineConnector{#5}%
+}
+\IfNoValueF{#6}{
+\renewcommand{\timelineEntryMinHeight}{#6}%
 }
 }{\end{tikzpicture}}
 
@@ -82,7 +86,7 @@
 		  inner sep=.5mm,
 		  yshift=\yshiftval,
 		  xshift=\xshiftval,
-		  minimum height=.4cm,
+		  minimum height=\timelineEntryMinHeight,
 		  align=left] (#2-label) at (#2) {#3};
 		\node[anchor=\IfBooleanTF{#1}{east}{west},
 		  rotate=45,
@@ -91,7 +95,7 @@
 		  fill=timeline-who,
 		  inner sep=.5mm,
 		  font=\color{timeline-who-fg}\footnotesize,
-		  minimum height=.4cm,
+		  minimum height=\timelineEntryMinHeight,
 		  align=left] at (#2-label.\IfBooleanTF{#1}{west}{east}) {#4};
 	\end{pgfonlayer}
 

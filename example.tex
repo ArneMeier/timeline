@@ -87,6 +87,7 @@ The environment \texttt{timeline} has five optional arguments:
 		[$\parameter{OuterBackgroundColor}$]
 		[$\parameter{OuterForegroundColor}$]
 		[$\parameter{ConnectorColor}$]
+		[$\parameter{MinHeight}$]
 \end{lstlisting}
 \end{center}
 
@@ -94,6 +95,11 @@ They define the respective color for the events on the timeline.
 Default settings are some orange \tikz{\node[fill=orange!75!white] at (0,0) {};} with black text for the inner part and some blueish \tikz{\node[fill=uniblue!75!white] at (0,0) {};} with white text for the outer part. 
 If the fifth parameter for the connector color is not specified, then the $\parameter{InnerBackgroundColor}$ will be used instead.
 Feel free to change the colours via the parameters.
+The parameter $\parameter{MinHeight}$ is used to define the minimum height of the entry boxes.
+If you wish changing just this value directly, you should just renew the corresponding macro directly after the \texttt{$\backslash$begin$\{$timelinne$\}$} start of the environment:
+\begin{lstlisting}
+	\renewcommand{\timelineEntryMinHeight}{.4cm}
+\end{lstlisting}
 
 \section{Commands}
 Inside the \texttt{timeline} environment one can use the following commands.
@@ -153,28 +159,29 @@ A small example is provided to demonstrate the commands:
 
 \begin{lstlisting}
 \begin{timeline}
-  \timebar{|}{0}{1959}{1960}{.5}{}
-  \zigzag{1}
-  \entry{1959}{Branching Quantifiers}{Henkin}
-  
-  \timebar{}{1.4}{1989}{1990}{.5}{}
-  \zigzag{2.4}
-  \entry{1989}{IF-logic}{Hintikka, Sandu}
-  
-  \timebar{}{2.8}{1997}{2018}{.5}{stealth'}
-  \entry{1997}{Compositional Semantics for IF}{Hodges}
-  \entry{2003}{IF modal logic}{Tulenheimo}
-  \entry{2007}{Dependence Logic}{Väänänen}
-  \flipentry{2008}{Modal Dependence Logic}{Väänänen}
-  \entry{2011-6}{Inclusion \& Exclusion Logic}{Galliani}
-  \entry{2012-8}{Independence Logic}{Grädel, Väänänen}
-  \flipentry{2011}{Modal Team Logic}{Müller}
-  \entry{2016}{Multiteam Semantics}{Durand et al.}
-  \flipentry{2016}{Prop. Team Logic}{Yang, Väänänen}
-  \flipentryshift{2017}{Polyteam Semantics}{Hannula et al.}{2mm}
+ 	\timebar{|}{0}{1959}{1960}{.5}{}
+	\zigzag{1}
+	\entry{1959}{Branching Quantifiers}{Henkin}
+  	
+	\timebar{}{1.4}{1989}{1990}{.5}{}
+	\zigzag{2.4}
+	\entry{1989}{IF-logic}{Hintikka, Sandu}
+
+	\timebar{}{2.8}{1997}{2018}{.5}{stealth'}
+	\entry{1997}{Compositional Semantics for IF}{Hodges}
+	\entry{2003}{IF modal logic}{Tulenheimo}
+	\entry{2007}{Dependence Logic}{Väänänen}
+	\flipentry{2008}{Modal Dependence Logic}{Väänänen}
+	\entry{2011-6}{Inclusion \& Exclusion Logic}{Galliani}
+	\entry{2012-8}{Independence Logic}{Grädel, Väänänen}
+	\flipentry{2011}{Modal Team Logic}{Müller}
+	\entry{2016}{Multiteam Semantics}{Durand et al.}
+	\flipentry{2016}{Propositional\\ Team Logic}{Väänänen\\Yang}
+	\flipentryshift{2017}{Polyteam Semantics}{Hannula et al.}{3mm}
 \end{timeline}
 \end{lstlisting}
 and produces the following timeline:
+
 
 	\begin{timeline}
 	 	\timebar{|}{0}{1959}{1960}{.5}{}
