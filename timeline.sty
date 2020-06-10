@@ -24,6 +24,7 @@
 \RequirePackage{tikz}
 \RequirePackage{xparse}
 \RequirePackage{ifthen}
+\RequirePackage{calc} % for length maxof
 
 \usetikzlibrary{arrows,shapes.misc,calc}
 
@@ -39,11 +40,18 @@
 \newcommand{\timelineOuterBG}[1]{\colorlet{timeline-who}{#1}}
 \newcommand{\timelineOuterFG}[1]{\colorlet{timeline-who-fg}{#1}}
 \newcommand{\timelineConnector}[1]{\colorlet{timeline-conector}{#1}}
-\newcommand{\timelineEntryMinHeight}{.4cm}
+\newlength\timelineEntryMinHeight
+
+%\setlength\timelineEntryMinHeight{.4cm}
 
 \pgfdeclarelayer{background}
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background,main,foreground}
+
+
+\newlength\boxheightright
+\newlength\boxheightleft
+
 
 
 %%%% This part of the code (until the end marker) is licensed under cc by-sa 3.0, Paul Gaborit (https://tex.stackexchange.com/users/14500/paul-gaborit)
@@ -55,19 +63,16 @@
 %%% End Marker
 
 
-\NewDocumentEnvironment{timeline}{O {orange!75!white} O {black} O {uniblue!75!white} O {white} O {orange!75!white} o}{%
+\NewDocumentEnvironment{timeline}{O {orange!75!white} O {black} O {uniblue!75!white} O {white} O {orange!75!white}}{%
 \begin{tikzpicture}%
 \timelineInnerBG{#1}%
 \timelineInnerFG{#2}%
 \timelineOuterBG{#3}%
 \timelineOuterFG{#4}%
 \IfNoValueTF{#5}{
-\timelineConnector{#1}%
+	\timelineConnector{#1}%
 }{
-\timelineConnector{#5}%
-}
-\IfNoValueF{#6}{
-\renewcommand{\timelineEntryMinHeight}{#6}%
+	\timelineConnector{#5}%
 }
 }{\end{tikzpicture}}
 
@@ -75,6 +80,7 @@
 \NewDocumentCommand{\entrytemplate}{s m m m o}{
 \pgfmathsetmacro{\yshiftval}{\IfBooleanTF{#1}{-0.4cm}{0.3cm}\IfValueT{#5}{-#5}}
 \pgfmathsetmacro{\xshiftval}{\IfBooleanTF{#1}{-0.3cm}{0.2cm}\IfValueT{#5}{+#5}}
+\setlength{\timelineEntryMinHeight}{\maxof{\heightof{#3}}{\heightof{#4}}+1.5mm}
 
 	\begin{pgfonlayer}{main}
 		\node[anchor=\IfBooleanTF{#1}{east}{west},
@@ -83,7 +89,7 @@
 		  rounded rectangle \IfBooleanTF{#1}{west}{east} arc=none,
 		  font=\color{timeline-what-fg}\footnotesize,
 		  fill=timeline-what,
-		  inner sep=.5mm,
+		  inner sep=.25mm,
 		  yshift=\yshiftval,
 		  xshift=\xshiftval,
 		  minimum height=\timelineEntryMinHeight,
@@ -93,7 +99,7 @@
 		  rounded rectangle,
 		  rounded rectangle \IfBooleanTF{#1}{east}{west} arc=none,
 		  fill=timeline-who,
-		  inner sep=.5mm,
+		  inner sep=.25mm,
 		  font=\color{timeline-who-fg}\footnotesize,
 		  minimum height=\timelineEntryMinHeight,
 		  align=left] at (#2-label.\IfBooleanTF{#1}{west}{east}) {#4};
@@ -108,7 +114,6 @@
 			{ |- ([xshift=1mm]#2-label.\IfBooleanTF{#1}{north east}{west})};
     \end{pgfonlayer}
 }
-
 
 \newcommand{\entry}[3]{
 	\entrytemplate{#1}{#2}{#3}

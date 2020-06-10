@@ -87,7 +87,6 @@ The environment \texttt{timeline} has five optional arguments:
 		[$\parameter{OuterBackgroundColor}$]
 		[$\parameter{OuterForegroundColor}$]
 		[$\parameter{ConnectorColor}$]
-		[$\parameter{MinHeight}$]
 \end{lstlisting}
 \end{center}
 
@@ -95,11 +94,6 @@ They define the respective color for the events on the timeline.
 Default settings are some orange \tikz{\node[fill=orange!75!white] at (0,0) {};} with black text for the inner part and some blueish \tikz{\node[fill=uniblue!75!white] at (0,0) {};} with white text for the outer part. 
 If the fifth parameter for the connector color is not specified, then the $\parameter{InnerBackgroundColor}$ will be used instead.
 Feel free to change the colours via the parameters.
-The parameter $\parameter{MinHeight}$ is used to define the minimum height of the entry boxes.
-If you wish changing just this value directly, you should just renew the corresponding macro directly after the \texttt{$\backslash$begin$\{$timelinne$\}$} start of the environment:
-\begin{lstlisting}
-	\renewcommand{\timelineEntryMinHeight}{.4cm}
-\end{lstlisting}
 
 \section{Commands}
 Inside the \texttt{timeline} environment one can use the following commands.
@@ -132,7 +126,8 @@ Inside the \texttt{timeline} environment one can use the following commands.
 $\parameter{xStartCoordinate}$ is the $x$-coordinate where it should start. Usually, when using this command, one has to calculate the $x$-coordinate by hand from what was executed before.
 Then length of the zigzag is $0.4$.
 
-\item[Entries.] An entry has four possible commands, depending on whether it should appear above, below, shifted above, or shifted below. The unshifted versions are essentially the same.
+\item[Entries.] An entry has four possible commands, depending on whether it should appear above, below, shifted above, or shifted below. 
+For the unshifted versions the following commands are used.
 \begin{lstlisting}
 	\entry{$\parameter{year}$}{$\parameter{what}$}{$\parameter{who}$}
 	\flipentry{$\parameter{year}$}{$\parameter{what}$}{$\parameter{who}$}
@@ -152,6 +147,12 @@ $\parameter{who}$ is the content of the outer box.
 \end{lstlisting}
 
 $\parameter{distance}$ is the length (often specified in mm) which shifts the entry to the right (in direction of the $x$-coordinate).
+
+Regarding all entries, the `minimum height' of a node is automatically set to 
+\begin{center}
+\verb'\maxof{\heightof{#3}}{\heightof{#4}}+1.5mm'
+\end{center}
+that is, the maximum of the font heights of the $\parameter{who}$- and $\parameter{what}$-values plus an inner sep of $1.5$ mm.
 \end{description}
 
 \section{Example}
@@ -206,6 +207,6 @@ and produces the following timeline:
   	\end{timeline}
 
 \section{Acknowledgements}
-Thanks fly out to: Paul Gaborit.
+Thanks fly out to: Paul Gaborit, Anthimos Kouroutsidis.
 
 \end{document}
