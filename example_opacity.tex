@@ -1,0 +1,33 @@
+\documentclass[12pt]{article}
+
+\usepackage{timeline}
+
+\begin{document}
+\thispagestyle{plain}
+
+\section*{Example of opacity}
+
+I added a 6th argument to timebar to select which step to apply to show years.
+I added an optionnal argument for opacity of labels. 
+It could be nice to centralise this argument as a single value, but don't know where to put it.
+
+\begin{timeline}
+ \timebar{|}{0}{2000}{2013}{1}{}{2}
+
+  \entry{2002}{entry}{no opacity}
+  \entryshift{2003}{entryshift}{no opacity}{4mm}
+  \flipentry{2004}{flipentry}{no opacity}
+  \flipentryshift{2005}{flipentryshift}{no opacity}{4mm}
+
+  \entry[0.5]{2008}{entry}{opacity}
+  \entryshift[0.5]{2009}{entryshift}{opacity}{4mm}
+  \flipentry[0.5]{2010}{flipentry}{opacity}
+  \flipentryshift[0.5]{2011}{flipentryshift}{opacity}{4mm}
+\end{timeline}
+
+A project I would love to do is also understand how to had a caption !
+
+
+\newpage
+
+\end{document}

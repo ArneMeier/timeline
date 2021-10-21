@@ -77,69 +77,73 @@
 }{\end{tikzpicture}}
 
 % \entrytemplate*type{year}{what}{where}{shift}
-\NewDocumentCommand{\entrytemplate}{s m m m o}{
-\pgfmathsetmacro{\yshiftval}{\IfBooleanTF{#1}{-0.4cm}{0.3cm}\IfValueT{#5}{-#5}}
-\pgfmathsetmacro{\xshiftval}{\IfBooleanTF{#1}{-0.3cm}{0.2cm}\IfValueT{#5}{+#5}}
-\setlength{\timelineEntryMinHeight}{\maxof{\heightof{#3}}{\heightof{#4}}+1.5mm}
-
+\NewDocumentCommand{\entrytemplate}{s m m m m o}{
+\pgfmathsetmacro{\yshiftval}{\IfBooleanTF{#1}{-0.4cm}{0.3cm}\IfValueT{#6}{-#6}}
+\pgfmathsetmacro{\xshiftval}{\IfBooleanTF{#1}{-0.3cm}{0.2cm}\IfValueT{#6}{+#6}}
+\setlength{\timelineEntryMinHeight}{\maxof{\heightof{#4}}{\heightof{#5}}+1.5mm}
+	% label
 	\begin{pgfonlayer}{main}
+		% first arg
 		\node[anchor=\IfBooleanTF{#1}{east}{west},
 		  rotate=45,
 		  rounded rectangle,
 		  rounded rectangle \IfBooleanTF{#1}{west}{east} arc=none,
 		  font=\color{timeline-what-fg}\footnotesize,
+		  opacity = #2,
 		  fill=timeline-what,
 		  inner sep=.25mm,
 		  yshift=\yshiftval,
 		  xshift=\xshiftval,
 		  minimum height=\timelineEntryMinHeight,
-		  align=left] (#2-label) at (#2) {#3};
+		  align=left] (#3-label) at (#3) {#4};
+		% second arg
 		\node[anchor=\IfBooleanTF{#1}{east}{west},
 		  rotate=45,
 		  rounded rectangle,
 		  rounded rectangle \IfBooleanTF{#1}{east}{west} arc=none,
 		  fill=timeline-who,
+		  opacity = #2,
 		  inner sep=.25mm,
 		  font=\color{timeline-who-fg}\footnotesize,
 		  minimum height=\timelineEntryMinHeight,
-		  align=left] at (#2-label.\IfBooleanTF{#1}{west}{east}) {#4};
+		  align=left] at (#3-label.\IfBooleanTF{#1}{west}{east}) {#5};
 	\end{pgfonlayer}
-
+	% connector
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#2) {};
-    	\path let \p1 = (#2) in node (#2-goal) at (\x1,\IfBooleanTF{#1}{-1.15}{.85}) {};
-		\draw[ultra thick,timeline-conector] (#2.center) 
-			\IfNoValueTF{#5}%
-			{ -- (#2.center|-#2-label.\IfBooleanTF{#1}{south east}{north west})}%
-			{ |- ([xshift=1mm]#2-label.\IfBooleanTF{#1}{north east}{west})};
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#3) {};
+    	\path let \p1 = (#3) in node (#3-goal) at (\x1,\IfBooleanTF{#1}{-1.15}{.85}) {};
+		\draw[ultra thick,timeline-conector] (#3.center) 
+			\IfNoValueTF{#6}%
+			{ -- (#3.center|-#3-label.\IfBooleanTF{#1}{south east}{north west})}%
+			{ |- ([xshift=1mm]#3-label.\IfBooleanTF{#1}{north east}{west})};
     \end{pgfonlayer}
 }
 
-\newcommand{\entry}[3]{
-	\entrytemplate{#1}{#2}{#3}
+\newcommand{\entry}[4][1]{
+	\entrytemplate{#1}{#2}{#3}{#4}
 }
 
-\newcommand{\flipentry}[3]{
-	\entrytemplate*{#1}{#2}{#3}
+\newcommand{\flipentry}[4][1]{
+	\entrytemplate*{#1}{#2}{#3}{#4}
 }
 
-\newcommand{\entryshift}[4]{
-	\entrytemplate{#1}{#2}{#3}[#4]
+\newcommand{\entryshift}[5][1]{
+	\entrytemplate{#1}{#2}{#3}{#4}[#5]
 }
 
-\newcommand{\flipentryshift}[4]{
-	\entrytemplate*{#1}{#2}{#3}[#4]
+\newcommand{\flipentryshift}[5][1]{
+	\entrytemplate*{#1}{#2}{#3}{#4}[#5]
 }
 
 
-% \timeline{startsymbol}{startX}{fromyear}{toyear}{intervallength}{endsymbol}
-\newcommand{\timebar}[6]{
+% \timeline{startsymbol}{startX}{fromyear}{toyear}{intervallength}{endsymbol}{intervalyear}
+\newcommand{\timebar}[7]{
 	\pgfmathsetmacro{\timelineIntervalLength}{(#4-#3)+1} % length of interval with 1x at the end
 	\ifthenelse{\equal{#1}{|}}{\pgfmathsetmacro{\timelineOffset}{-.25}}{\pgfmathsetmacro{\timelineOffset}{0}}
   	\draw[#1-#6] (#2+\timelineOffset,0) -- (#2+#5*\timelineIntervalLength,0);
   	\foreach \l [count=\li] in {#3,...,#4}{
   		\pgfmathsetmacro{\timelineX}{#2+(\li-1)*#5} % counter \li starts at 1, thus '-1' required. 
-  		\pgfmathsetmacro{\timelineLengthY}{mod(\l,5)==0?2:1} % if its divisible by 5 
+  		\pgfmathsetmacro{\timelineLengthY}{mod(\l,#7)==0?2:1} % if its divisible by 5 
  		\draw (\timelineX,.\timelineLengthY) -- (\timelineX,-.\timelineLengthY) node[font=\footnotesize,yshift=-1.15mm]  {\ifthenelse{\timelineLengthY=2}{\l}{}};
   		\node (\l) at (\timelineX,0) {};
   	}
