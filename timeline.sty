@@ -133,9 +133,9 @@
 	\end{pgfonlayer}
 	% connector
     \begin{pgfonlayer}{background}
-		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector] at (#3) {};
+		\node[circle,inner sep=0mm,minimum width=1mm,fill=timeline-conector, opacity = #2] at (#3) {};
     	\path let \p1 = (#3) in node (#3-goal) at (\x1,\IfBooleanTF{#1}{-1.15}{.85}) {};
-		\draw[ultra thick,timeline-conector] (#3.center) 
+		\draw[ultra thick,timeline-conector, opacity = #2] (#3.center) 
 			\IfNoValueTF{#6}%
 			{ -- (#3.center|-#3-label.\IfBooleanTF{#1}{south east}{north west})}%
 			{ |- ([xshift=1mm]#3-label.\IfBooleanTF{#1}{north east}{west})};
