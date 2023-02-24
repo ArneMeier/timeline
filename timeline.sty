@@ -83,6 +83,29 @@
 \setlength{\timelineEntryMinHeight}{\maxof{\heightof{#4}}{\heightof{#5}}+1.5mm}
 	% label
 	\begin{pgfonlayer}{main}
+
+		% back ground white
+		\node[anchor=\IfBooleanTF{#1}{east}{west},
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle \IfBooleanTF{#1}{west}{east} arc=none,
+		  font=\color{white}\footnotesize,
+		  fill=white,
+		  inner sep=.25mm,
+		  yshift=\yshiftval,
+		  xshift=\xshiftval,
+		  minimum height=\timelineEntryMinHeight,
+		  align=left] (#3-label) at (#3) {#4};
+		\node[anchor=\IfBooleanTF{#1}{east}{west},
+		  rotate=45,
+		  rounded rectangle,
+		  rounded rectangle \IfBooleanTF{#1}{east}{west} arc=none,
+		  fill=white,
+		  inner sep=.25mm,
+		  font=\color{white}\footnotesize,
+		  minimum height=\timelineEntryMinHeight,
+		  align=left] at (#3-label.\IfBooleanTF{#1}{west}{east}) {#5};
+
 		% first arg
 		\node[anchor=\IfBooleanTF{#1}{east}{west},
 		  rotate=45,
