@@ -119,6 +119,9 @@ Inside the \texttt{timeline} environment one can use the following commands.
 		$\parameter{stepLength}$ is the length of one year on the timebar.
 		
 		$\parameter{endSymbol}$ can be any symbol one could put on the right side of `\verb'-'' at \verb'\draw[-]' in the \texttt{tikz}-command.
+		
+	\emph{Notice,} that the \texttt{timebar}-command has one optional argument that allows you to specify the intervals at which the year label is displayed. 
+	The default value for this interval is \texttt{5}. (Thanks at gowachin for implementing!)
 	\item[Add a crunched bar part.] Used to literally skip some parts in the timebar where nothing happens. Drawn via the command
 \begin{lstlisting}
 	\zigzag{$\parameter{xStartCoordinate}$}
@@ -153,9 +156,16 @@ Regarding all entries, the `minimum height' of a node is automatically set to
 \verb'\maxof{\heightof{#3}}{\heightof{#4}}+1.5mm'
 \end{center}
 that is, the maximum of the font heights of the $\parameter{who}$- and $\parameter{what}$-values plus an inner sep of $1.5$ mm.
+
+\item[Opacity.] Thanks to gowachin, there exists the possibility to make labels opaque (using the \texttt{opacity}-argument of nodes in TikZ. 
+This is an optional argument which is possible for the macros \texttt{entry}/\texttt{flipentry}/ \texttt{entryshift}/\texttt{flipentryshift}, e.g., 
+\begin{center}
+	\verb'\entry[0.5]{2008}{entry}{opacity}'.
+\end{center}
+Here, \verb'[0.5]' denotes an opacity of this particular entry making it moderately translucent or opaque. Also see the second example below.
 \end{description}
 
-\section{Example}
+\section{Example 1}
 A small example is provided to demonstrate the commands:
 
 \begin{lstlisting}
@@ -205,8 +215,46 @@ and produces the following timeline:
 		\flipentry{2016}{Propositional\\ Team Logic}{Väänänen\\Yang}
 		\flipentryshift{2017}{Polyteam Semantics}{Hannula et al.}{3mm}
   	\end{timeline}
+  	
+
+\section{Example 2 (Opacity and Interval Year)}
+A small example by gowachin to demonstrate the optional opacity argument:
+
+\begin{lstlisting}
+\begin{timeline}
+ \timebar[2]{|}{0}{2000}{2013}{1}{}
+
+  \entry{2002}{entry}{no opacity}
+  \entryshift{2003}{entryshift}{no opacity}{4mm}
+  \flipentry{2004}{flipentry}{no opacity}
+  \flipentryshift{2005}{flipentryshift}{no opacity}{4mm}
+
+  \entry[0.5]{2008}{entry}{opacity}
+  \entryshift[0.5]{2009}{entryshift}{opacity}{4mm}
+  \flipentry[0.5]{2010}{flipentry}{opacity}
+  \flipentryshift[0.2]{2011}{flipentryshift}{opacity}{4mm}
+\end{timeline}
+
+\end{lstlisting}
+
+produces then the following timeline, where the entries at the rear are having different opacities.
+
+\begin{timeline}
+ \timebar[2]{|}{0}{2000}{2013}{1}{}
+
+  \entry{2002}{entry}{no opacity}
+  \entryshift{2003}{entryshift}{no opacity}{4mm}
+  \flipentry{2004}{flipentry}{no opacity}
+  \flipentryshift{2005}{flipentryshift}{no opacity}{4mm}
+
+  \entry[0.5]{2008}{entry}{opacity}
+  \entryshift[0.5]{2009}{entryshift}{opacity}{4mm}
+  \flipentry[0.5]{2010}{flipentry}{opacity}
+  \flipentryshift[0.2]{2011}{flipentryshift}{opacity}{4mm}
+\end{timeline}
+
 
 \section{Acknowledgements}
-Thanks fly out to: Paul Gaborit, Anthimos Kouroutsidis.
+Thanks fly out to: Paul Gaborit, Anthimos Kouroutsidis, gowachin.
 
 \end{document}
